@@ -4,7 +4,7 @@ const { getMotivationQuote, getAlmostQuote, getBadQuote } = require('./quotes');
 /**
  * @param {Number} percentage value between 0 and (including) 1
  */
- const getQuote = (percentage) => {
+const getQuote = (percentage) => {
     if (percentage < 0.5) return getBadQuote();
     if (percentage < 1) return getAlmostQuote();
     return getMotivationQuote();
@@ -50,10 +50,10 @@ const createNextQuestionButton = () => {
 
 const createQuestionEmbed = (description, percentage = 2) => {
     const embed = new MessageEmbed().setDescription(description);
-    if (percentage < .5) embed.setColor('RED');
-    if (percentage < 1) embed.setColor('ORANGE');
-    if (percentage == 1) embed.setColor('GREEN');
     if (percentage == 2) embed.setColor('BLURPLE');
+    if (percentage == 1) embed.setColor('GREEN');
+    if (percentage < 1) embed.setColor('ORANGE');
+    if (percentage < .5) embed.setColor('RED');
     return embed;
 }
 
@@ -67,10 +67,10 @@ const getAnswerPercentage = (question, answers) => {
     question.answers.forEach(answer => {
         if (answers.includes(answer.value)) {
             if (!answer.correct)
-                percentage =- deduct_points;
+                percentage = - deduct_points;
         } else {
             if (answer.correct)
-                percentage =- deduct_points;
+                percentage = - deduct_points;
         }
     });
     return percentage;
@@ -88,7 +88,9 @@ const parseQuestion = async (interaction) => {
     const correct_text = correct.map(v => v.label + '\n').join('');
 
     await interaction.update({
-        embeds: [createQuestionEmbed(`${question.question}\nYour answer: ${given_answers.join('')}Correct answer${correct.length > 1 ? 's' : ''}: ${correct_text}\n${getQuote(percentage)}`, percentage)],
+        embeds: [createQuestionEmbed(
+            `${question.question}\nYour answer: ${given_answers.join('')}Correct answer${correct.length > 1 ? 's' : ''}: ${correct_text}\n${getQuote(percentage)}`,
+            percentage)],
         components: [new MessageActionRow().addComponents(createNextQuestionButton())]
     });
 }
