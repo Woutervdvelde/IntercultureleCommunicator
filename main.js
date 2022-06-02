@@ -24,4 +24,14 @@ client.on('interactionCreate', async interaction => {
     parseQuestion(interaction);
 });
 
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isButton()) return;
+    if (interaction.customId != 'IC_next_question') return;
+    const command = commands.find(c => c.name == 'question');
+    command.execute(interaction);
+
+    //TODO: remove button but gives error (INTERACTION_ALREADY_REPLIED)
+    // await interaction.update({components:[]})
+});
+
 client.login(process.env.BOT_TOKEN);

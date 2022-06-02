@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const { Routes } = require('discord-api-types/v9');
@@ -8,7 +8,7 @@ const Store = new LocalStorage('./scratch');
 //Store.setItem(key, value)
 //Store.getItem(key)
 
-const { questions, createQuestionMenu } = require('./questions');
+const { questions, createQuestionMenu, createQuestionEmbed } = require('./questions');
 
 const getOptionValue = (options, search) => {
     const response = options.find(o => o.name == search);
@@ -38,8 +38,9 @@ const question = async (interaction) => {
     const q = questions[Math.floor(Math.random() * questions.length)];
     const row = new MessageActionRow()
         .addComponents(createQuestionMenu(q))
+    const embed = createQuestionEmbed(q.question);
 
-    await interaction.reply({ content: q.question, components: [row] });
+    await interaction.reply({ embeds: [embed], components: [row] });
 }
 
 const commands = [
