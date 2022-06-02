@@ -8,8 +8,7 @@ const { parseQuestion } = require('./questions');
 
 client.on('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    const guilds = await client.guilds.fetch();
-    guilds.forEach(guild => registerCommands(guild.id));
+    registerCommands();
 });
 
 client.on('interactionCreate', async interaction => {

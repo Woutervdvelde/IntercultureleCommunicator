@@ -6,9 +6,18 @@ const questions = [
         question: 'Bij wie hoort "Machtafstand"?',
         answers: [
             { label: 'Hofstede', correct: true, value: '1' },
-            { label: 'Hall', correct: true, value: '2' },
-            { label: 'Kluckhohn', correct: true, value: '3' },
-            { label: 'Trompenaars en Hampden-Turner', correct: true, value: '4' }
+            { label: 'Hall', correct: false, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
+    },
+    {
+        question: 'Waar staat \'PBITCH\' voor?',
+        answers: [
+            { label: 'Personen-Berichten-Informatiestroom-Tijdsbeschouwing-Context-Handeling', correct: false, value: '1' },
+            { label: 'Personen-Berichten-Informatiestroom-Tijdsbeschouwing-Context-Handeling', correct: false, value: '2' },
+            { label: 'Personen-Berichten-Informatiestroom-Tijdsbeschouwing-Context-Handeling', correct: false, value: '3' },
+            { label: 'Personen-Berichten-Informatiestroom-Tijdsbeschouwing-Context-Handeling', correct: false, value: '4' }
         ]
     }
 ]
@@ -42,13 +51,13 @@ const getAnswerPercentage = (question, answers) => {
     question.answers.forEach(answer => {
         if (answers.includes(answer.value)) {
             if (!answer.correct)
-                percentage = percentage - deduct_points;
+                percentage = - deduct_points;
         } else {
             if (answer.correct)
-                percentage = percentage - deduct_points;
+                percentage = - deduct_points;
         }
     });
-    return (Math.round(percentage) * 100) / 100;
+    return percentage;
 }
 
 const parseQuestion = async (interaction) => {
@@ -60,10 +69,8 @@ const parseQuestion = async (interaction) => {
     const correct_text = correct.map(v => v.label + '\n').join('');
 
     await interaction.update({
-        content: `${question.question}\nYour answer: ${given_answers.join('')}Correct answer(s): ${correct_text}\n\n${getQuote(percentage)}`,
-        components: [new MessageActionRow().addComponents(
-            createQuestionMenu(question).setDisabled()
-        )]
+        content: `${question.question}\nYour answer: ${given_answers.join('')}Correct answer${correct.length > 1 ? 's' : ''}: ${correct_text}\n${getQuote(percentage)}`,
+        components: []
     });
 
 

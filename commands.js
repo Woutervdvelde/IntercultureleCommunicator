@@ -69,10 +69,10 @@ const commands = [
     }
 ];
 
-const registerCommands = async (GUILD_ID) => {
+const registerCommands = async () => {
     try {
         await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, GUILD_ID),
+            Routes.applicationCommands(process.env.CLIENT_ID),
             { body: commands },
         );
     } catch (error) {
