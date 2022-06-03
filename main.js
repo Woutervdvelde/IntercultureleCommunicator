@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, StoreChannel } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 const { commands, registerCommands } = require('./commands')
@@ -16,19 +16,19 @@ client.on('interactionCreate', async interaction => {
     const command = commands.find(c => c.name === interaction.commandName);
     if (!command) return await interaction.reply('command not found..');
 
-    command.execute(interaction);
+    command.execute(interaction, client);
 });
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isSelectMenu()) return;
-    parseQuestion(interaction);
+    parseQuestion(interaction, client);
 });
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isButton()) return;
     if (interaction.customId != 'IC_next_question') return;
     const command = commands.find(c => c.name == 'question');
-    command.execute(interaction);
+    command.execute(interaction, client);
 
     //TODO: remove button but gives error (INTERACTION_ALREADY_REPLIED)
     // await interaction.update({components:[]})

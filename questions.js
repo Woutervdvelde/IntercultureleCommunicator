@@ -1,4 +1,5 @@
 const { MessageSelectMenu, MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+const { getUserStats, setUserStats, getNotificationList, setNotificationList } = require('./notificationHandler');
 const { getMotivationQuote, getAlmostQuote, getBadQuote } = require('./quotes');
 
 /**
@@ -125,6 +126,7 @@ const getAnswerPercentage = (question, answers) => {
 }
 
 const parseQuestion = async (interaction) => {
+    const user_id = interaction.user.id;
     const content = interaction.message.embeds[0].description;
     const question = getQuestionByName(content);
     if (!question) return;
@@ -132,6 +134,10 @@ const parseQuestion = async (interaction) => {
     const correct = getCorrectAnswersFromQuestion(question);
     const given_answers = interaction.values.map(v => getAnswerFromQuestion(question, v).label + '\n');
     const percentage = getAnswerPercentage(question, interaction.values);
+
+    const stats = getUserStats(user_id);
+    percentage == 1 ? stats.right++ : stats.wrong++;
+    setUserStats(user_id, stats);
 
     const correct_text = correct.map(v => v.label + '\n').join('');
 
@@ -141,6 +147,8 @@ const parseQuestion = async (interaction) => {
             percentage)],
         components: [new MessageActionRow().addComponents(createNextQuestionButton())]
     });
+
+    console.log(stats);
 }
 
 module.exports = { questions, parseQuestion, createQuestionMenu, createQuestionEmbed }

@@ -3,12 +3,8 @@ const { REST, ALLOWED_STICKER_EXTENSIONS } = require('@discordjs/rest');
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const { Routes } = require('discord-api-types/v9');
 
-const LocalStorage = require('node-localstorage').LocalStorage;
-const Store = new LocalStorage('./scratch');
-//Store.setItem(key, value)
-//Store.getItem(key)
-
 const { questions, createQuestionMenu, createQuestionEmbed } = require('./questions');
+const { getNotificationList, setNotificationList } = require('./notificationHandler');
 
 const getOptionValue = (options, search) => {
     const response = options.find(o => o.name == search);
@@ -34,11 +30,11 @@ const say = async (interaction) => {
     interaction.channel.send(message);
 }
 
-const message = async (interaction) => {
+const message = async (interaction, client) => {
     const options = interaction.options._hoistedOptions;
     const message = getOptionValue(options, 'message');
     const member_id = getOptionValue(options, 'user');
-    const member = await interaction.guild.members.fetch(member_id);
+    const member = await client.users.fetch(member_id);
     if (!member) return await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
 
     try {
@@ -79,6 +75,20 @@ const ask = async (interaction) => {
     }
 }
 
+const notify = async (interaction, client) => {
+    const id = interaction.user.id;
+    const notifyList = getNotificationList();
+
+    if (notifyList.includes(id))
+        notifyList.splice(notifyList.indexOf(id), 1);
+    else
+        notifyList.push(id);
+
+    const user = await client.users.fetch(id);
+    user.send(notifyList.includes(id) ? 'You will now receive notifications' : 'You will no longer receive notifications');
+    setNotificationList(notifyList);
+}
+
 const commands = [
     {
         name: 'ping',
@@ -110,7 +120,7 @@ const commands = [
                 description: 'the person who you want the message to be send to',
                 type: 6,
                 required: true
-            }, 
+            },
             {
                 name: 'message',
                 description: 'the message you want to send',
@@ -118,6 +128,11 @@ const commands = [
                 required: true
             }
         ]
+    },
+    {
+        name: 'notify',
+        description: 'Toggle notifications',
+        execute: notify
     },
     {
         name: 'question',
