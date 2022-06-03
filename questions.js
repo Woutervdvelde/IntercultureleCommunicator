@@ -21,12 +21,51 @@ const questions = [
         ]
     },
     {
-        question: 'Waar staat \'PBITCH\' voor?',
+        question: 'Bij wie hoort "De keten van handelingen"?',
         answers: [
-            { label: 'Personen-Berichten-Informatiestroom-Tijdsbeschouwing-Context-Handeling', correct: false, value: '1' },
-            { label: 'Personen-Berichten-Informatiestroom-Tijdsbeschouwing-Context-Handeling', correct: false, value: '2' },
-            { label: 'Personen-Berichten-Informatiestroom-Tijdsbeschouwing-Context-Handeling', correct: false, value: '3' },
-            { label: 'Personen-Berichten-Informatiestroom-Tijdsbeschouwing-Context-Handeling', correct: false, value: '4' }
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: true, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
+    },
+    {
+        question: 'Bij wie hoort "De natuur van de mens"?',
+        answers: [
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: false, value: '2' },
+            { label: 'Kluckhohn', correct: true, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
+    },
+    {
+        question: 'Bij wie hoort "Verleden - Heden - Toekomst"?',
+        answers: [
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: false, value: '2' },
+            { label: 'Kluckhohn', correct: true, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
+    },
+    {
+        question: 'Bij wie hoort "Status"?',
+        answers: [
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: false, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: true, value: '4' }
+        ]
+    },
+    {
+        question: 'Welke hoort NIET bij de basiswaarden van Hall?',
+        answers: [
+            { label: 'Context (laag/hoog)', correct: false, value: '1' },
+            { label: 'Tijdsbeleving', correct: false, value: '2' },
+            { label: 'Boodschappen (snel/langzaam)', correct: false, value: '3' },
+            { label: 'Persoonlijke ruimte', correct: false, value: '4' },
+            { label: 'Hedonisme & soberheid', correct: true, value: '5' },
+            { label: 'De keten van handelingen', correct: false, value: '6' },
+            { label: 'Informatiestroom (snel/langzaam)', correct: false, value: '7' }
         ]
     }
 ]
