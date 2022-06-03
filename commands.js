@@ -34,6 +34,21 @@ const say = async (interaction) => {
     interaction.channel.send(message);
 }
 
+const message = async (interaction) => {
+    const options = interaction.options._hoistedOptions;
+    const message = getOptionValue(options, 'message');
+    const member_id = getOptionValue(options, 'user');
+    const member = await interaction.guild.members.fetch(member_id);
+    if (!member) return await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
+
+    try {
+        await member.send(message);
+        await interaction.reply({ content: "Sent", ephemeral: true });
+    } catch (e) {
+        await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
+    }
+}
+
 const question = async (interaction) => {
     const q = questions[Math.floor(Math.random() * questions.length)];
     const row = new MessageActionRow()
@@ -47,9 +62,9 @@ const ask = async (interaction) => {
     if (!interaction.inGuild()) return await interaction.reply("You can only use this feature in a guild");
 
     const options = interaction.options._hoistedOptions;
-    const member_id = getOptionValue(options, 'person');
+    const member_id = getOptionValue(options, 'user');
     const member = await interaction.guild.members.fetch(member_id);
-    if (!member) return await interaction.reply({content: "Couldn't send to that user", ephemeral: true});
+    if (!member) return await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
 
     const q = questions[Math.floor(Math.random() * questions.length)];
     const row = new MessageActionRow()
@@ -58,9 +73,9 @@ const ask = async (interaction) => {
 
     try {
         await member.send({ embeds: [embed], components: [row] });
-        await interaction.reply({content: "Okay", ephemeral: true});
-    } catch(e) {
-        await interaction.reply({content: "Couldn't send to that user", ephemeral: true});
+        await interaction.reply({ content: "Okay", ephemeral: true });
+    } catch (e) {
+        await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
     }
 }
 
@@ -85,6 +100,26 @@ const commands = [
         ]
     },
     {
+        name: 'message',
+        description: 'Messages specified user the specified text',
+        default_member_permissions: 0x0000000000000008,
+        execute: message,
+        options: [
+            {
+                name: 'user',
+                description: 'the person who you want the message to be send to',
+                type: 6,
+                required: true
+            }, 
+            {
+                name: 'message',
+                description: 'the message you want to send',
+                type: 3,
+                required: true
+            }
+        ]
+    },
+    {
         name: 'question',
         description: 'Asks you a random question',
         execute: question
@@ -95,7 +130,7 @@ const commands = [
         execute: ask,
         options: [
             {
-                name: 'person',
+                name: 'user',
                 description: 'the person who the question will be asked to',
                 type: 6,
                 required: true
