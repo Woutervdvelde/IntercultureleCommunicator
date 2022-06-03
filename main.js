@@ -1,4 +1,6 @@
 require('dotenv').config();
+const { triggerNotificationInterval } = require('./notificationHandler');
+
 
 const { Client, Intents, StoreChannel } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -7,8 +9,10 @@ const { commands, registerCommands } = require('./commands')
 const { parseQuestion } = require('./questions');
 
 client.on('ready', async () => {
+    client.commands = commands;
     console.log(`Logged in as ${client.user.tag}!`);
     registerCommands();
+    triggerNotificationInterval(client);
 });
 
 client.on('interactionCreate', async interaction => {

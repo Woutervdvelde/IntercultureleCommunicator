@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
+const { MessageActionRow, MessageSelectMenu, MessageEmbed, User } = require('discord.js');
 const { REST, ALLOWED_STICKER_EXTENSIONS } = require('@discordjs/rest');
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const { Routes } = require('discord-api-types/v9');
@@ -18,9 +18,7 @@ const removeResponse = (interaction) => {
     } catch (e) { }
 }
 
-const ping = async (interaction) => {
-    await interaction.reply({ content: 'Pong!', ephemeral: true });
-}
+const ping = async (interaction) => await interaction.reply({ content: 'Pong!', ephemeral: true });
 
 const say = async (interaction) => {
     const options = interaction.options._hoistedOptions;
@@ -55,24 +53,30 @@ const question = async (interaction) => {
 }
 
 const ask = async (interaction) => {
-    if (!interaction.inGuild()) return await interaction.reply("You can only use this feature in a guild");
-
-    const options = interaction.options._hoistedOptions;
-    const member_id = getOptionValue(options, 'user');
-    const member = await interaction.guild.members.fetch(member_id);
-    if (!member) return await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
-
     const q = questions[Math.floor(Math.random() * questions.length)];
     const row = new MessageActionRow()
         .addComponents(createQuestionMenu(q))
     const embed = createQuestionEmbed(q.question);
 
-    try {
-        await member.send({ embeds: [embed], components: [row] });
-        await interaction.reply({ content: "Okay", ephemeral: true });
-    } catch (e) {
-        await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
+    let member;
+    if (!interaction instanceof User) {
+        if (!interaction.inGuild()) return await interaction.reply("You can only use this feature in a guild");
+
+        const options = interaction.options._hoistedOptions;
+        const user_id = getOptionValue(options, 'user');
+        member = await interaction.guild.members.fetch(user_id);
+        if (!member) return await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
+
+        try {
+            await interaction.reply({ content: "Okay", ephemeral: true });
+        } catch (e) {
+            await interaction.reply({ content: "Couldn't send to that user" });
+        }
+    } else {
+        member = interaction;
     }
+
+    await member.send({ embeds: [embed], components: [row] });
 }
 
 const notify = async (interaction, client) => {
@@ -85,8 +89,14 @@ const notify = async (interaction, client) => {
         notifyList.push(id);
 
     const user = await client.users.fetch(id);
-    user.send(notifyList.includes(id) ? 'You will now receive notifications' : 'You will no longer receive notifications');
+    await user.send(
+        notifyList.includes(id)
+            ? `You will now receive notifications\nThey will be randomly sent between ${process.env.NOTIFICATION_MIN_TIME} minutes and ${process.env.NOTIFICATION_MAX_TIME} minutes`
+            : 'You will no longer receive notifications'
+    );
+
     setNotificationList(notifyList);
+    removeResponse(interaction);
 }
 
 const commands = [

@@ -6,4 +6,20 @@ const setUserStats = (user_id, settings) => Store.setItem(user_id, JSON.stringif
 const getNotificationList = () => JSON.parse(Store.getItem('notify')) ?? [];
 const setNotificationList = (list) => Store.setItem('notify', JSON.stringify(list));
 
-module.exports = { getUserStats, setUserStats, getNotificationList, setNotificationList }
+const sendNotifications = (client) => {
+    console.log(`${new Date()}sending notification`);
+    const command = client.commands.find(c => c.name == 'ask');
+    const list = getNotificationList();
+    list.forEach(async user_id => {
+        const user = await client.users.fetch(user_id);
+        if (!user) return;
+        command.execute(user);
+    });
+}
+
+const triggerNotificationInterval = (client) => {
+    const timeout = Math.floor(Math.random() * (process.env.NOTIFICATION_MAX_TIME - process.env.NOTIFICATION_MIN_TIME) + process.env.NOTIFICATION_MIN_TIME) * 60 * 1000;
+    setTimeout(() => { sendNotifications(client); triggerNotificationInterval(client); }, timeout);
+}
+
+module.exports = { triggerNotificationInterval, getUserStats, setUserStats, getNotificationList, setNotificationList }
