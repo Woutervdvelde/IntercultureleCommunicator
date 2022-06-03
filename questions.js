@@ -67,6 +67,15 @@ const questions = [
             { label: 'De keten van handelingen', correct: false, value: '6' },
             { label: 'Informatiestroom (snel/langzaam)', correct: false, value: '7' }
         ]
+    },
+    {
+        question: 'Bij wie hoort "Persoonlijke ruimte"?',
+        answers: [
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: true, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
     }
 ]
 
