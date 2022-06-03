@@ -1,5 +1,5 @@
 const { MessageActionRow, MessageSelectMenu, MessageEmbed } = require('discord.js');
-const { REST } = require('@discordjs/rest');
+const { REST, ALLOWED_STICKER_EXTENSIONS } = require('@discordjs/rest');
 const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const { Routes } = require('discord-api-types/v9');
 
@@ -43,6 +43,27 @@ const question = async (interaction) => {
     await interaction.reply({ embeds: [embed], components: [row] });
 }
 
+const ask = async (interaction) => {
+    if (!interaction.inGuild()) return await interaction.reply("You can only use this feature in a guild");
+
+    const options = interaction.options._hoistedOptions;
+    const member_id = getOptionValue(options, 'person');
+    const member = await interaction.guild.members.fetch(member_id);
+    if (!member) return await interaction.reply({content: "Couldn't send to that user", ephemeral: true});
+
+    const q = questions[Math.floor(Math.random() * questions.length)];
+    const row = new MessageActionRow()
+        .addComponents(createQuestionMenu(q))
+    const embed = createQuestionEmbed(q.question);
+
+    try {
+        await member.send({ embeds: [embed], components: [row] });
+        await interaction.reply({content: "Okay", ephemeral: true});
+    } catch(e) {
+        await interaction.reply({content: "Couldn't send to that user", ephemeral: true});
+    }
+}
+
 const commands = [
     {
         name: 'ping',
@@ -67,6 +88,19 @@ const commands = [
         name: 'question',
         description: 'Asks you a random question',
         execute: question
+    },
+    {
+        name: 'ask',
+        description: 'Ask a question to a specific person (DM)',
+        execute: ask,
+        options: [
+            {
+                name: 'person',
+                description: 'the person who the question will be asked to',
+                type: 6,
+                required: true
+            }
+        ]
     }
 ];
 
