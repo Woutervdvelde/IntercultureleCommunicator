@@ -17,8 +17,11 @@ const sendNotifications = (client) => {
     });
 }
 
-const triggerNotificationInterval = (client) => {
-    const timeout = Math.floor(Math.random() * (process.env.NOTIFICATION_MAX_TIME - process.env.NOTIFICATION_MIN_TIME) + process.env.NOTIFICATION_MIN_TIME) * 60 * 1000;
+const max = parseInt(process.env.NOTIFICATION_MAX_TIME) ?? 30;
+const min = parseInt(process.env.NOTIFICATION_MIN_TIME) ?? 10;
+
+const triggerNotificationInterval = async (client) => {
+    const timeout = Math.floor(Math.random() * (max - min) + min) * 60 * 1000;
     setTimeout(() => { sendNotifications(client); triggerNotificationInterval(client); }, timeout);
 }
 

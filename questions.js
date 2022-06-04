@@ -147,8 +147,6 @@ const parseQuestion = async (interaction) => {
             percentage)],
         components: [new MessageActionRow().addComponents(createNextQuestionButton())]
     });
-
-    console.log(stats);
 }
 
 module.exports = { questions, parseQuestion, createQuestionMenu, createQuestionEmbed }
