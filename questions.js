@@ -11,6 +11,7 @@ const getQuote = (percentage) => {
     return getMotivationQuote();
 }
 
+//TODO: make the 'value' in answers increase automatically
 const questions = [
     {
         question: 'Bij wie hoort "Machtafstand"?',
@@ -49,7 +50,7 @@ const questions = [
         ]
     },
     {
-        question: 'Bij wie hoort "Status"?',
+        question: 'Bij wie hoort "Status (toegeschreven/verworven)"?',
         answers: [
             { label: 'Hofstede', correct: false, value: '1' },
             { label: 'Hall', correct: false, value: '2' },
@@ -77,7 +78,94 @@ const questions = [
             { label: 'Kluckhohn', correct: false, value: '3' },
             { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
         ]
-    }
+    },//added from here 04-06-2022
+    {
+        question: 'Universalisme, wat is belangrijker voor een universalist?',
+        answers: [
+            { label: 'regels', correct: true, value: '1' },
+            { label: 'relaties', correct: false, value: '2' },
+        ]
+    },
+    {
+        question: 'Universalisme, wat is belangrijker voor een particularist?',
+        answers: [
+            { label: 'regels', correct: false, value: '1' },
+            { label: 'relaties', correct: true, value: '2' },
+        ]
+    },
+    {
+        question: 'Wat is de buitenste laag van de Culturele ui?',
+        answers: [
+            { label: 'Tastbare zaken', correct: true, value: '1' },
+            { label: 'Normen & Waarden', correct: false, value: '2' },
+            { label: 'Basiswaarden', correct: false, value: '3' },
+        ]
+    },
+    {
+        question: 'Waar is dit een voorbeeld van:\n"Het is niet acceptabel om 10 minuten te laat te komen"',
+        answers: [
+            { label: 'Tastbare zaken', correct: false, value: '1' },
+            { label: 'Normen', correct: true, value: '2' },
+            { label: 'Waarden', correct: false, value: '3' },
+            { label: 'Basiswaarden', correct: false, value: '4' },
+        ]
+    },
+    {
+        question: 'Welke laag is abstract en onzichtbaar van de Culturele ui?',
+        answers: [
+            { label: 'Tastbare zaken', correct: false, value: '1' },
+            { label: 'Normen & Waarden', correct: false, value: '2' },
+            { label: 'Basiswaarden', correct: true, value: '3' },
+        ]
+    },
+    {
+        question: 'Cultuur is aangeleerd, Hofstede noemt dat programmering\nVia wat gebeurt dit allemaal volgens hem?',
+        answers: [
+            { label: 'Socialisatie', correct: true, value: '1' },
+            { label: 'Televisie', correct: false, value: '2' },
+            { label: 'Waarneming', correct: true, value: '3' },
+            { label: 'Opvoeding', correct: true, value: '4' },
+            { label: 'Lezen in een boek', correct: false, value: '5' },
+            { label: 'Normen & Waarden', correct: true, value: '6' },
+            { label: 'Propaganda', correct: false, value: '7' },
+        ]
+    },
+    {
+        question: 'Waar staat de eerste "O" voor in het TOPOI-model?',
+        answers: [
+            { label: 'Onderzoeken', correct: false, value: '1' },
+            { label: 'Ordening', correct: true, value: '2' },
+            { label: 'Onbewust', correct: false, value: '3' },
+            { label: 'Opvallen', correct: false, value: '4' },
+        ]
+    },
+    {
+        question: 'Waar staat de "T" voor in het TOPOI-model?',
+        answers: [
+            { label: 'Tijdsbeschouwing', correct: false, value: '1' },
+            { label: 'Talent', correct: false, value: '2' },
+            { label: 'Taal', correct: true, value: '3' },
+            { label: 'Tegengesteld', correct: false, value: '4' },
+        ]
+    },
+    {
+        question: 'Waar staat de "P" voor in het TOPOI-model?',
+        answers: [
+            { label: '', correct: false, value: '1' },
+        ]
+    },
+    {
+        question: '',
+        answers: [
+            { label: '', correct: false, value: '1' },
+        ]
+    },
+    {
+        question: '',
+        answers: [
+            { label: '', correct: false, value: '1' },
+        ]
+    },
 ]
 
 const createQuestionMenu = (question) => {
