@@ -4,9 +4,10 @@ const rest = new REST({ version: '9' }).setToken(process.env.BOT_TOKEN);
 const { Routes } = require('discord-api-types/v9');
 
 const { questions, createQuestionMenu, createQuestionEmbed } = require('./questions');
-const { getNotificationList, setNotificationList } = require('./notificationHandler');
+const { getNotificationList, setNotificationList, getUserStats } = require('./notificationHandler');
 
-const getOptionValue = (options, search) => {
+const getOptionValue = (interaction, search) => {
+    const options = interaction.options._hoistedOptions;
     const response = options.find(o => o.name == search);
     return response ? response.value : null;
 }
@@ -21,17 +22,15 @@ const removeResponse = (interaction) => {
 const ping = async (interaction) => await interaction.reply({ content: 'Pong!', ephemeral: true });
 
 const say = async (interaction) => {
-    const options = interaction.options._hoistedOptions;
-    const message = getOptionValue(options, 'message');
+    const message = getOptionValue(interaction, 'message');
 
     removeResponse(interaction);
     interaction.channel.send(message);
 }
 
 const message = async (interaction, client) => {
-    const options = interaction.options._hoistedOptions;
-    const message = getOptionValue(options, 'message');
-    const member_id = getOptionValue(options, 'user');
+    const message = getOptionValue(interaction, 'message');
+    const member_id = getOptionValue(interaction, 'user');
     const member = await client.users.fetch(member_id);
     if (!member) return await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
 
@@ -62,8 +61,7 @@ const ask = async (interaction) => {
     if (!interaction instanceof User) {
         if (!interaction.inGuild()) return await interaction.reply("You can only use this feature in a guild");
 
-        const options = interaction.options._hoistedOptions;
-        const user_id = getOptionValue(options, 'user');
+        const user_id = getOptionValue(interaction, 'user');
         member = await interaction.guild.members.fetch(user_id);
         if (!member) return await interaction.reply({ content: "Couldn't send to that user", ephemeral: true });
 
@@ -97,6 +95,27 @@ const notify = async (interaction, client) => {
 
     setNotificationList(notifyList);
     removeResponse(interaction);
+}
+
+const stats = async (interaction, client) => {
+    const id = getOptionValue(interaction, 'user') ?? interaction.user.id;
+    const user = await client.users.fetch(id);
+    const stats = getUserStats(id);
+
+    const embed = new MessageEmbed()
+        .setColor('BLURPLE')
+        .setAuthor({ name: user.username, iconURL: user.avatarURL() })
+        .addFields(
+            { name: 'Answered correctly', value: stats.right.toString(), inline: true },
+            { name: 'Answered wrong', value: stats.wrong.toString(), inline: true }
+        );
+
+    if (stats.right + stats.wrong == 0)
+        embed.setDescription(`No questions have been answered yet`);
+    else
+        embed.setDescription(`Answered ${Math.round(stats.right / (stats.right + stats.wrong) * 100)}% of the questions correctly`);
+
+    interaction.reply({ embeds: [embed] });
 }
 
 const commands = [
@@ -159,6 +178,19 @@ const commands = [
                 description: 'the person who the question will be asked to',
                 type: 6,
                 required: true
+            }
+        ]
+    },
+    {
+        name: 'stats',
+        description: 'Shows statistics of a specific person (defaults to yourself)',
+        execute: stats,
+        options: [
+            {
+                name: 'user',
+                description: 'user you want statistics from',
+                type: 6,
+                required: false
             }
         ]
     }
