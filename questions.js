@@ -151,21 +151,122 @@ const questions = [
     {
         question: 'Waar staat de "P" voor in het TOPOI-model?',
         answers: [
-            { label: '', correct: false, value: '1' },
+            { label: 'Personen', correct: true, value: '1' },
+            { label: 'Prestatie', correct: false, value: '2' },
+            { label: 'Pitchen', correct: false, value: '3' },
+            { label: 'Plannen', correct: false, value: '4' },
         ]
     },
     {
-        question: '',
+        question: 'Waar staat de "I" voor in het TOPOI-model?',
         answers: [
-            { label: '', correct: false, value: '1' },
+            { label: 'Inzet', correct: true, value: '1' },
+            { label: 'Inzicht', correct: false, value: '2' },
+            { label: 'Inlevingsvermogen', correct: false, value: '3' },
+            { label: 'Indirect', correct: false, value: '4' },
         ]
     },
     {
-        question: '',
+        question: 'Bij wie hoort "Laag- en hoogcontextcommunicatie"?',
         answers: [
-            { label: '', correct: false, value: '1' },
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: true, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
         ]
     },
+    {
+        question: 'In welke cultuur begin je bij de context en werk je naar de kern toe?',
+        answers: [
+            { label: 'Laag context cultuur', correct: false, value: '1' },
+            { label: 'Hoog context cultuur', correct: true, value: '2' },
+        ]
+    },
+    {
+        question: 'Bij wie hoort "Monochrone en Polychrone tijdsbeleving"?',
+        answers: [
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: true, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
+    },
+    {
+        question: 'Wat hoort er bij een Monochrone tijdsbeleving?',
+        answers: [
+            { label: 'Het liefst één ding tegelijk', correct: true, value: '1' },
+            { label: 'Werkt snel en stipt', correct: true, value: '2' },
+            { label: 'Vaak relatiegericht', correct: false, value: '3' },
+            { label: 'Behoefte aan expliciete informatie', correct: true, value: '4' },
+            { label: 'Tijd is ruimtelijk', correct: false, value: '5' },
+            { label: 'Communiceert vanuit hoogcontextcultuur', correct: false, value: '6' }
+        ]
+    },
+    {
+        question: 'Hoe noemt Hall het afbakenen van tijd in blokjes?',
+        answers: [
+            { label: 'Opdelen', correct: false, value: '1' },
+            { label: 'Breken', correct: false, value: '2' },
+            { label: 'Onderverdelen', correct: false, value: '3' },
+            { label: 'Compartimentaliseren', correct: true, value: '4' },
+        ]
+    },
+    {
+        question: 'Bij wie hoort "Persoonlijke ruimte"?',
+        answers: [
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: true, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
+    },
+    {
+        question: 'Als je een grote persoonlijke ruimte hebt, dan hou je van mensen die...?',
+        answers: [
+            { label: 'Heel dichtbij staan', correct: false, value: '1' },
+            { label: 'Niet heel dichtbij staan', correct: true, value: '2' },
+        ]
+    },
+    {
+        question: 'Bij wie hoort "Snelle en langzame boodschappen"?',
+        answers: [
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: true, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
+    },
+    {
+        question: 'Wat zijn voorbeelden van snelle boodschappen?',
+        answers: [
+            { label: 'Tweet', correct: true, value: '1' },
+            { label: 'Kunst', correct: false, value: '2' },
+            { label: 'SMS', correct: true, value: '3' },
+            { label: 'Boeken', correct: false, value: '4' },
+        ]
+    },
+    {
+        question: 'Bij wie hoort "Snelle en langzame informatiestroom"?',
+        answers: [
+            { label: 'Hofstede', correct: false, value: '1' },
+            { label: 'Hall', correct: true, value: '2' },
+            { label: 'Kluckhohn', correct: false, value: '3' },
+            { label: 'Trompenaars en Hampden-Turner', correct: false, value: '4' }
+        ]
+    },
+    {
+        question: 'Je hebt een nieuwe klant binnen gehaald!\n Tijdens de koffie vertel je dit aan je collega\'s, het nieuws blijft wel binnen de afdeling.\nDit is een voorbeeld van?',
+        answers: [
+            { label: 'Langzame informatiestroom', correct: true, value: '1' },
+            { label: 'Snelle informatiestroom', correct: false, value: '2' },
+        ]
+    },
+    // {
+    //     question: '',
+    //     answers: [
+    //         { label: '', correct: false, value: '1' },
+    //     ]
+    // },
 ]
 
 const createQuestionMenu = (question) => {

@@ -3,7 +3,10 @@ const motivational_quotes = [
     "I knew you could do it",
     "Too easy",
     "How are you even stressing?",
-    "Beautiful brain you've got there"
+    "Beautiful brain you've got there",
+    "Loving your vibe right now",
+    "You've got this",
+    "You can rest easy knowing you know the answer"
 ]
 
 const almost_quotes = [
@@ -17,10 +20,13 @@ const almost_quotes = [
 
 const bad_quotes = [
     "keep the 27th of June free",
-    "How....",
+    "How...",
     "What were you thinking?!",
     "You blithering idiot _(Jeremy Clarkson voice)_",
-    "Did you even learn?"
+    "Did you even learn?",
+    "Ofcourse that's not right!",
+    "Marco will be sad",
+    "How can you dissapoint Marco like that?"
 ]
 
 const getRandom = (array) => array[Math.floor(Math.random() * array.length)];
